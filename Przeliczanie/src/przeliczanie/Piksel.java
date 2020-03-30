@@ -6,7 +6,8 @@
 package przeliczanie;
 
 import java.util.Scanner;
-
+import java.lang.Math;
+import static java.lang.Math.abs;
 /**
  *
  * @author Kamil
@@ -56,6 +57,8 @@ class MaxMin {
 
 public class Piksel {
     public int r, g, b;
+    public int r1, g1, b1;
+    public int m;
     public Double HSV_value;
     public Double chroma;
     public Double lightness;
@@ -64,8 +67,8 @@ public class Piksel {
     public Double HSV_saturation;
     public Double HSL_saturation;
     public Double hue, saturationv, saturationl, v, l;
-    
-        
+    public Double hueprim;
+    public Double x;    
         
        
     Piksel rgb2hsv(){
@@ -88,14 +91,14 @@ public class Piksel {
        if(chroma == 0){
            HSV_hue = 0.0;
            System.out.println("Hue: " + HSV_hue);
-       }else if(HSV_value == 0) {
+       }else if(HSV_value == r) {
            HSV_hue = 60 * (0 + (g - b)/chroma);
            System.out.println("Hue: " + HSV_hue);
        }else if(HSV_value == g){
            HSV_hue = 60 * (2 + (b - r)/chroma);
            System.out.println("Hue: " + HSV_hue);
        }else if(HSV_value == b){
-           HSV_hue = 60 * (4 + (r + g)/chroma);
+           HSV_hue = 60 * (4 + (r - g)/chroma);
            System.out.println("Hue: " + HSV_hue);
        }
               
@@ -104,7 +107,7 @@ public class Piksel {
            HSV_saturation = 0.0;
            System.out.println("Saturation V: " + HSV_saturation);
        }else {
-           HSV_saturation = chroma/HSV_value;
+           HSV_saturation = chroma / HSV_value;
             System.out.println("Saturation V: " + HSV_saturation);
        }
        
@@ -124,5 +127,48 @@ public class Piksel {
 //    hsl2hsv;
 //    hsv2hsl;
       return this;
+    }
+    
+    Piksel hsv2rgb(){
+        
+        chroma = HSV_value * HSV_saturation;
+        
+        hueprim = HSV_hue / 60;
+        
+        x = chroma * (1 - (Math.abs(hueprim %2 - 1)));
+                
+        if(hueprim>= 0 && hueprim <= 1 ){
+            r1 = (int) Math.round(chroma.doubleValue());
+            g1 = (int) Math.round(x.doubleValue());
+            b1 = 0;
+        }else if(hueprim>= 1 && hueprim <= 2 ){
+            r1 = (int) Math.round(x.doubleValue());
+            g1 = (int) Math.round(chroma.doubleValue());
+            b1 = 0;
+        }else if(hueprim>= 2 && hueprim <= 3 ){
+            r1 = 0;
+            g1 = (int) Math.round(chroma.doubleValue());
+            b1 = (int) Math.round(x.doubleValue());
+        }else if(hueprim>= 3 && hueprim <= 4 ){
+            r1 = 0;
+            g1 = (int) Math.round(x.doubleValue());
+            b1 = (int) Math.round(chroma.doubleValue());
+        }else if(hueprim>= 5 && hueprim <= 6 ){
+            r1 = (int) Math.round(chroma.doubleValue());
+            g1 = 0;
+            b1 = (int) Math.round(chroma.doubleValue());
+        }
+        
+        m = (int) Math.round(HSV_value.doubleValue()) - (int) Math.round(chroma.doubleValue());
+        
+        r = r1 + m;
+        g = g1 + m;
+        b = b1 + m;
+        
+        System.out.println(r);
+        System.out.println(g);
+        System.out.println(b);
+        
+        return this;
     }
 }

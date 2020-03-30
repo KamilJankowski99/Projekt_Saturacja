@@ -17,10 +17,15 @@ public class Main {
                
     public static void main(String[] args) {
         Piksel piksel = new Piksel();
-        piksel.r = 0;
-        piksel.g = 1;
-        piksel.b = 0;
+        piksel.r = 10;
+        piksel.g = 125;
+        piksel.b = 170;
         piksel.rgb2hsv();
-       }               
+        
+        piksel.HSV_saturation = piksel.HSV_saturation - 0.1;
+        
+       System.out.println(piksel.HSV_hue); 
+       piksel.hsv2rgb();
+    }               
     }
 
