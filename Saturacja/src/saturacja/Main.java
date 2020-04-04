@@ -27,8 +27,8 @@ public class Main extends Application {
     final Slider blueSlider = new Slider(0, 255, 127);
     
     //obrazek do obrobki - na razie statycznie
-    final Image image  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
-    final Image imageOriginal  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
+    Image image  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
+    Image imageOriginal  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
     
     //labelki identyfikujace obrazki
     final Label flagOriginal = new Label("Oryginalny obrazek:");
@@ -61,6 +61,7 @@ public class Main extends Application {
     
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
+    JOCLImageEffects joclEffect = new JOCLImageEffects();
     
     @Override
     public void start(Stage stage) {
@@ -194,6 +195,9 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
+float delta = new_val.intValue();
+image = joclEffect.changeImageBlueComponent(delta, image);
+imageview.setImage(image);
                     blueValue.setText(String.format("%.2f", new_val));
             }        
         });
