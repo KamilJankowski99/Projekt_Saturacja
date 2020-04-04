@@ -45,10 +45,10 @@ public class JOCLImageEffects {
             + "    int2 posIn = {gidX, gidY};" + "\n"
             + "    int2 posOut = {gidX, gidY};" + "\n"
             + "    uint4 pixel = read_imageui(sourceImage, samplerIn, posIn);" + "\n"
-            + "    pixel.x = angle;" + "\n" //blue
-            + "    pixel.y = 0;" + "\n" //green
-            + "    pixel.z = 0;" + "\n" //red
-            + "    pixel.w = 0;" + "\n" //alpha           
+            + "    pixel.x = pixel.x + angle;" + "\n" //blue
+            + "    pixel.y = pixel.y;" + "\n" //green
+            + "    pixel.z = pixel.z;" + "\n" //red
+            + "    pixel.w = pixel.w;" + "\n" //alpha           
             + "    write_imageui(targetImage, posOut, pixel);" + "\n"
             + "}";
 
