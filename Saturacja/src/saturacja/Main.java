@@ -197,8 +197,8 @@ public class Main extends Application {
                     Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
 
-                float delta = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(delta, image);
+                float deltaBlue = new_val.intValue() - old_val.intValue();
+                image = joclEffect.changeImageBlueComponent(0, 0, deltaBlue, image);
                 imageview.setImage(image);
                 blueValue.setText(String.format("%.2f", new_val));
             }
