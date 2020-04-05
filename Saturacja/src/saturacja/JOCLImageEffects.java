@@ -24,7 +24,7 @@ public class JOCLImageEffects {
 
 //OpenCl kernel
     private static supportOCL supportOCL = new supportOCL();
-    private static String kernelPath = ".\\src\\saturacja\\changeBlueChannel.cl";
+    private static String kernelPath = ".\\src\\saturacja\\changeRGBChannels.cl";
     private static String programSource = supportOCL.readOCLKernel(Paths.get(kernelPath));
 
     void initCL() {
