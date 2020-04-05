@@ -9,7 +9,7 @@ import org.jocl.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-public class JOCLImageEffects {
+public class JOCLImageEffectsRGB {
 
     private BufferedImage inputImage;
     private BufferedImage outputImage;

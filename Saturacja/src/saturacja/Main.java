@@ -62,7 +62,7 @@ public class Main extends Application {
 
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
-    final static JOCLImageEffects joclEffect = new JOCLImageEffects();
+    final static JOCLImageEffectsRGB joclEffect = new JOCLImageEffectsRGB();
 
     @Override
     public void start(Stage stage) {
