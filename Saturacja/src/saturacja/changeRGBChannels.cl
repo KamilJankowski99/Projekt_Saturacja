@@ -11,7 +11,9 @@ const sampler_t samplerOut =
 __kernel void changeImageSaturation(
     __read_only  image2d_t sourceImage,
     __write_only image2d_t targetImage,
-    float angle)
+    float deltaRed,
+    float deltaGreen,
+    float deltaBlue)
 {
     int gidX = get_global_id(0);
     int gidY = get_global_id(1);
@@ -20,9 +22,9 @@ __kernel void changeImageSaturation(
     int2 posIn = {gidX, gidY};
     int2 posOut = {gidX, gidY};
     uint4 pixel = read_imageui(sourceImage, samplerIn, posIn);
-    pixel.x = pixel.x + angle; //blue
-    pixel.y = pixel.y; //green
-    pixel.z = pixel.z; //red
+    pixel.x = pixel.x + deltaBlue; //blue
+    pixel.y = pixel.y + deltaGreen; //green
+    pixel.z = pixel.z + deltaRed; //red
     pixel.w = pixel.w; //alpha 
     write_imageui(targetImage, posOut, pixel);
 };
