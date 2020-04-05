@@ -62,7 +62,8 @@ public class Main extends Application {
 
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
-    final static JOCLImageEffectsRGB joclEffect = new JOCLImageEffectsRGB();
+    final static JOCLImageEffectsRGB joclEffectRGB = new JOCLImageEffectsRGB();
+    final static JOCLImageEffectsHSL joclEffectHSL = new JOCLImageEffectsHSL();
 
     @Override
     public void start(Stage stage) {
@@ -180,7 +181,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaRed = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(deltaRed, 0, 0, image);
+                image = joclEffectRGB.changeImageBlueComponent(deltaRed, 0, 0, image);
                 imageview.setImage(image);
                 redValue.setText(String.format("%.2f", new_val));
             }
@@ -190,7 +191,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaGreen = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(0, deltaGreen, 0, image);
+                image = joclEffectRGB.changeImageBlueComponent(0, deltaGreen, 0, image);
                 imageview.setImage(image);
                 greenValue.setText(String.format("%.2f", new_val));
             }
@@ -200,7 +201,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaBlue = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(0, 0, deltaBlue, image);
+                image = joclEffectRGB.changeImageBlueComponent(0, 0, deltaBlue, image);
                 imageview.setImage(image);
                 blueValue.setText(String.format("%.2f", new_val));
             }
