@@ -118,7 +118,7 @@ public class JOCLImageEffectsHSL {
                 0, null, null);
     }
 
-    Image changeImageComponents(float deltaRed, float deltaGreen, float deltaBlue, Image inputJXFImage) {
+    Image changeImageComponents(float deltaHue, float deltaSaturation, float deltaVolume, Image inputJXFImage) {
         initCL();
         inputImage = SwingFXUtils.fromFXImage(inputJXFImage, null);
 
@@ -136,11 +136,11 @@ public class JOCLImageEffectsHSL {
         clSetKernelArg(kernel, 0, Sizeof.cl_mem, Pointer.to(inputImageMem));
         clSetKernelArg(kernel, 1, Sizeof.cl_mem, Pointer.to(outputImageMem));
         clSetKernelArg(kernel, 2, Sizeof.cl_float,
-                Pointer.to(new float[]{deltaRed}));
+                Pointer.to(new float[]{deltaHue}));
         clSetKernelArg(kernel, 3, Sizeof.cl_float,
-                Pointer.to(new float[]{deltaGreen}));
+                Pointer.to(new float[]{deltaSaturation}));
         clSetKernelArg(kernel, 4, Sizeof.cl_float,
-                Pointer.to(new float[]{deltaBlue}));
+                Pointer.to(new float[]{deltaVolume}));
         clEnqueueNDRangeKernel(commandQueue, kernel, 2, null,
                 globalWorkSize, null, 0, null, null);
 

@@ -156,7 +156,7 @@ public class Main extends Application {
         hueSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                float deltaHue = new_val.intValue() - old_val.intValue();
+                float deltaHue = new_val.floatValue() - old_val.floatValue();
                 image = joclEffectHSL.changeImageComponents(deltaHue, 0, 0, image);
                 imageview.setImage(image);
                 hueValue.setText(String.format("%.2f", new_val));
@@ -166,7 +166,7 @@ public class Main extends Application {
         saturationSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                float deltaSaturation = new_val.intValue() - old_val.intValue();
+                float deltaSaturation = new_val.floatValue() - old_val.floatValue();
                 image = joclEffectHSL.changeImageComponents(0, deltaSaturation, 0, image);
                 imageview.setImage(image);
                 saturationValue.setText(String.format("%.2f", new_val));
@@ -176,7 +176,7 @@ public class Main extends Application {
         lightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                float deltaLightness = new_val.intValue() - old_val.intValue();
+                float deltaLightness = new_val.floatValue() - old_val.floatValue();
                 image = joclEffectHSL.changeImageComponents(0, 0, deltaLightness, image);
                 imageview.setImage(image);
                 lightnessValue.setText(String.format("%.2f", new_val));
