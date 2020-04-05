@@ -18,52 +18,52 @@ import javafx.stage.Stage;
 
 //javafx wymaga klasy rozszerzajacej klase Application 
 public class Main extends Application {
+
     //suwaczki dla przestrzeni barw HSL i RGB
-    final Slider hueSlider = new Slider(0, 1, 0.5);    
+    final Slider hueSlider = new Slider(0, 1, 0.5);
     final Slider saturationSlider = new Slider(0, 1, 0.5);
-    final Slider lightnessSlider = new Slider (0, 1, 0.5);
+    final Slider lightnessSlider = new Slider(0, 1, 0.5);
     final Slider redSlider = new Slider(0, 255, 127);
-    final Slider greenSlider = new Slider(0, 255, 127); 
+    final Slider greenSlider = new Slider(0, 255, 127);
     final Slider blueSlider = new Slider(0, 255, 127);
-    
+
     //obrazek do obrobki - na razie statycznie
-    Image image  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
-    Image imageOriginal  = new Image(getClass().getResourceAsStream("rainbow.jpg"));
-    
+    Image image = new Image(getClass().getResourceAsStream("rainbow.jpg"));
+    Image imageOriginal = new Image(getClass().getResourceAsStream("rainbow.jpg"));
+
     //labelki identyfikujace obrazki
     final Label flagOriginal = new Label("Oryginalny obrazek:");
-    final Label flagChange = new Label("Obrazek ze zmianami w przestrzeni barw HSL lub RGB:");    
-    
+    final Label flagChange = new Label("Obrazek ze zmianami w przestrzeni barw HSL lub RGB:");
+
     //labalki z nazwami suwakow
     final Label hueCaption = new Label("(HSL)Barwa:");
     final Label saturationCaption = new Label("(HSL)Saturacja:");
     final Label lightnessCaption = new Label("(HSL)Jasnosc:");
     final Label redCaption = new Label("(RGB)Czerwony:");
     final Label greenCaption = new Label("(RGB)Zielony:");
-    final Label blueCaption = new Label("(RGB)Niebieski:");    
-    
+    final Label blueCaption = new Label("(RGB)Niebieski:");
+
     //odczyt wartosci suwaczka pokazany w GUI
     final Label hueValue = new Label(
-        Double.toString(hueSlider.getValue()));
+            Double.toString(hueSlider.getValue()));
     final Label saturationValue = new Label(
-        Double.toString(saturationSlider.getValue()));
+            Double.toString(saturationSlider.getValue()));
     final Label lightnessValue = new Label(
-        Double.toString(lightnessSlider.getValue()));
+            Double.toString(lightnessSlider.getValue()));
     final Label redValue = new Label(
-        Double.toString(redSlider.getValue()));
+            Double.toString(redSlider.getValue()));
     final Label greenValue = new Label(
-        Double.toString(greenSlider.getValue()));
+            Double.toString(greenSlider.getValue()));
     final Label blueValue = new Label(
-        Double.toString(blueSlider.getValue()));
-    
+            Double.toString(blueSlider.getValue()));
+
     //kolor dla tekstu
     final static Color textColor = Color.BLACK;
-    
+
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
     final static JOCLImageEffects joclEffect = new JOCLImageEffects();
-    
-    
+
     @Override
     public void start(Stage stage) {
         //setup sceny, dodanie obrazkow itd
@@ -72,17 +72,17 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Systemy Rozproszone - program nr 2, Kamil Jankowski");
         scene.setFill(Color.RED);
- 
+
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setHgap(10);
-        grid.setVgap(10);        
- 
-        ImageView imageview = new ImageView (image);
-        ImageView imageviewOriginal = new ImageView (imageOriginal);
+        grid.setVgap(10);
+
+        ImageView imageview = new ImageView(image);
+        ImageView imageviewOriginal = new ImageView(imageOriginal);
 
         imageview.setEffect(colorEffect);
-        
+
         GridPane.setConstraints(imageview, 0, 1);
         GridPane.setConstraints(imageviewOriginal, 3, 1);
         GridPane.setConstraints(flagChange, 0, 0);
@@ -96,7 +96,7 @@ public class Main extends Application {
         grid.getChildren().add(imageview);
         grid.getChildren().add(imageviewOriginal);
         scene.setRoot(grid);
-        
+
         //rozmieszczenie labelek, suwaczkow i wartosci 
         GridPane.setConstraints(hueCaption, 0, 2);
         GridPane.setConstraints(hueSlider, 1, 2);
@@ -106,37 +106,37 @@ public class Main extends Application {
         GridPane.setConstraints(saturationValue, 2, 3);
         GridPane.setConstraints(lightnessCaption, 0, 4);
         GridPane.setConstraints(lightnessSlider, 1, 4);
-        GridPane.setConstraints(lightnessValue, 2, 4);        
+        GridPane.setConstraints(lightnessValue, 2, 4);
         GridPane.setConstraints(redCaption, 3, 2);
         GridPane.setConstraints(redSlider, 4, 2);
-        GridPane.setConstraints(redValue, 5, 2);        
+        GridPane.setConstraints(redValue, 5, 2);
         GridPane.setConstraints(greenCaption, 3, 3);
         GridPane.setConstraints(greenSlider, 4, 3);
-        GridPane.setConstraints(greenValue, 5, 3);        
+        GridPane.setConstraints(greenValue, 5, 3);
         GridPane.setConstraints(blueCaption, 3, 4);
         GridPane.setConstraints(blueSlider, 4, 4);
-        GridPane.setConstraints(blueValue, 5, 4);        
-        
+        GridPane.setConstraints(blueValue, 5, 4);
+
         //dodanie elementow GUI do siatki
         grid.getChildren().add(hueCaption);
         grid.getChildren().add(hueSlider);
         grid.getChildren().add(hueValue);
         grid.getChildren().add(saturationCaption);
         grid.getChildren().add(saturationSlider);
-        grid.getChildren().add(saturationValue);        
+        grid.getChildren().add(saturationValue);
         grid.getChildren().add(lightnessCaption);
         grid.getChildren().add(lightnessSlider);
-        grid.getChildren().add(lightnessValue);        
+        grid.getChildren().add(lightnessValue);
         grid.getChildren().add(redCaption);
-        grid.getChildren().add(redSlider);        
-        grid.getChildren().add(redValue);        
+        grid.getChildren().add(redSlider);
+        grid.getChildren().add(redValue);
         grid.getChildren().add(greenCaption);
-        grid.getChildren().add(greenSlider);        
-        grid.getChildren().add(greenValue);        
+        grid.getChildren().add(greenSlider);
+        grid.getChildren().add(greenValue);
         grid.getChildren().add(blueCaption);
-        grid.getChildren().add(blueSlider);        
+        grid.getChildren().add(blueSlider);
         grid.getChildren().add(blueValue);
-        
+
         //kolorki tekstu na wczesniej ustawiony default
         hueCaption.setTextFill(textColor);
         hueValue.setTextFill(textColor);
@@ -149,68 +149,68 @@ public class Main extends Application {
         greenCaption.setTextFill(textColor);
         greenValue.setTextFill(textColor);
         blueCaption.setTextFill(textColor);
-        blueValue.setTextFill(textColor); 
-        
+        blueValue.setTextFill(textColor);
+
         //sledzenie zmian suwaczkow, aktualizacja wyswietlanej wartosci i aplikowanie efektu
         hueSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    colorEffect.setHue(new_val.doubleValue());
-                    hueValue.setText(String.format("%.2f", new_val));
+                    Number old_val, Number new_val) {
+                colorEffect.setHue(new_val.doubleValue());
+                hueValue.setText(String.format("%.2f", new_val));
             }
         });
-        
+
         saturationSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    colorEffect.setSaturation(new_val.doubleValue());
-                    saturationValue.setText(String.format("%.2f", new_val));
-            }        
+                    Number old_val, Number new_val) {
+                colorEffect.setSaturation(new_val.doubleValue());
+                saturationValue.setText(String.format("%.2f", new_val));
+            }
         });
 
         lightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    colorEffect.setBrightness(new_val.doubleValue());
-                    lightnessValue.setText(String.format("%.2f", new_val));
+                    Number old_val, Number new_val) {
+                colorEffect.setBrightness(new_val.doubleValue());
+                lightnessValue.setText(String.format("%.2f", new_val));
             }
         });
-        
+
         redSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
+                    Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
-                    redValue.setText(String.format("%.2f", new_val));
-            }        
+                redValue.setText(String.format("%.2f", new_val));
+            }
         });
 
         greenSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
+                    Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
-                    greenValue.setText(String.format("%.2f", new_val));
-            }        
+                greenValue.setText(String.format("%.2f", new_val));
+            }
         });
 
         blueSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
+                    Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
 
-float delta = new_val.intValue()- old_val.intValue();
-image = joclEffect.changeImageBlueComponent(delta, image);
-imageview.setImage(image);
-                    blueValue.setText(String.format("%.2f", new_val));
-            }        
+                float delta = new_val.intValue() - old_val.intValue();
+                image = joclEffect.changeImageBlueComponent(delta, image);
+                imageview.setImage(image);
+                blueValue.setText(String.format("%.2f", new_val));
+            }
         });
-        
+
         //show must go on ;)
         stage.show();
     }
-    
+
     // javafx nie uzywa funkcji main, ale trzeba ja dodac ze wzgledow formalnych
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

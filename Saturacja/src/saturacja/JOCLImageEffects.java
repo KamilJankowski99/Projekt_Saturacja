@@ -121,11 +121,11 @@ public class JOCLImageEffects {
         kernel = clCreateKernel(program, "changeImageSaturation", null);
 
     }
-    private void initImageMem()
-    {
+
+    private void initImageMem() {
         // Create the memory object for the input- and output image
-        DataBufferInt dataBufferSrc =
-            (DataBufferInt)inputImage.getRaster().getDataBuffer();
+        DataBufferInt dataBufferSrc
+                = (DataBufferInt) inputImage.getRaster().getDataBuffer();
         int dataSrc[] = dataBufferSrc.getData();
 
         cl_image_format imageFormat = new cl_image_format();
@@ -133,27 +133,27 @@ public class JOCLImageEffects {
         imageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
 
         inputImageMem = clCreateImage2D(
-            context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-            new cl_image_format[]{imageFormat}, imageSizeX, imageSizeY,
-            imageSizeX * Sizeof.cl_uint, Pointer.to(dataSrc), null);
+                context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
+                new cl_image_format[]{imageFormat}, imageSizeX, imageSizeY,
+                imageSizeX * Sizeof.cl_uint, Pointer.to(dataSrc), null);
 
         outputImageMem = clCreateImage2D(
-            context, CL_MEM_WRITE_ONLY,
-            new cl_image_format[]{imageFormat}, imageSizeX, imageSizeY,
-            0, null, null);
-    }    
-        Image changeImageBlueComponent(float delta, Image inputJXFImage )
-    {
+                context, CL_MEM_WRITE_ONLY,
+                new cl_image_format[]{imageFormat}, imageSizeX, imageSizeY,
+                0, null, null);
+    }
+
+    Image changeImageBlueComponent(float delta, Image inputJXFImage) {
         initCL();
         inputImage = SwingFXUtils.fromFXImage(inputJXFImage, null);
-        
+
         imageSizeX = inputImage.getWidth();
         imageSizeY = inputImage.getHeight();
         initImageMem();
 
         outputImage = new BufferedImage(
-            imageSizeX, imageSizeY, BufferedImage.TYPE_INT_RGB);
-        
+                imageSizeX, imageSizeY, BufferedImage.TYPE_INT_RGB);
+
         // Set up the work size and arguments, and execute the kernel
         long globalWorkSize[] = new long[2];
         globalWorkSize[0] = imageSizeX;
@@ -161,21 +161,20 @@ public class JOCLImageEffects {
         clSetKernelArg(kernel, 0, Sizeof.cl_mem, Pointer.to(inputImageMem));
         clSetKernelArg(kernel, 1, Sizeof.cl_mem, Pointer.to(outputImageMem));
         clSetKernelArg(kernel, 2, Sizeof.cl_float,
-            Pointer.to(new float[]{delta}));
+                Pointer.to(new float[]{delta}));
         clEnqueueNDRangeKernel(commandQueue, kernel, 2, null,
-            globalWorkSize, null, 0, null, null);
+                globalWorkSize, null, 0, null, null);
 
         // Read the pixel data into the output image
-        
-        DataBufferInt dataBufferDst =
-            (DataBufferInt)outputImage.getRaster().getDataBuffer();
+        DataBufferInt dataBufferDst
+                = (DataBufferInt) outputImage.getRaster().getDataBuffer();
         int dataDst[] = dataBufferDst.getData();
         clEnqueueReadImage(
-            commandQueue, outputImageMem, true, new long[3],
-            new long[]{imageSizeX, imageSizeY, 1},
-            imageSizeX * Sizeof.cl_uint, 0,
-            Pointer.to(dataDst), 0, null, null);
-        
+                commandQueue, outputImageMem, true, new long[3],
+                new long[]{imageSizeX, imageSizeY, 1},
+                imageSizeX * Sizeof.cl_uint, 0,
+                Pointer.to(dataDst), 0, null, null);
+
         clFlush(commandQueue);
         clFinish(commandQueue);
         return SwingFXUtils.toFXImage(outputImage, null);
