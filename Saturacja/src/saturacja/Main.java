@@ -61,7 +61,8 @@ public class Main extends Application {
     
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
-    JOCLImageEffects joclEffect = new JOCLImageEffects();
+    final static JOCLImageEffects joclEffect = new JOCLImageEffects();
+    
     
     @Override
     public void start(Stage stage) {
@@ -195,7 +196,8 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
 //TO DO: dodac obsluge efektu
-float delta = new_val.intValue()-old_val.intValue();
+
+float delta = new_val.intValue()- old_val.intValue();
 image = joclEffect.changeImageBlueComponent(delta, image);
 imageview.setImage(image);
                     blueValue.setText(String.format("%.2f", new_val));

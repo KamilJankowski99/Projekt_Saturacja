@@ -176,6 +176,8 @@ public class JOCLImageEffects {
             imageSizeX * Sizeof.cl_uint, 0,
             Pointer.to(dataDst), 0, null, null);
         
+        clFlush(commandQueue);
+        clFinish(commandQueue);
         return SwingFXUtils.toFXImage(outputImage, null);
     }
 }
