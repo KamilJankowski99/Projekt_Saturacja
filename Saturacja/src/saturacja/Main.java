@@ -20,12 +20,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     //suwaczki dla przestrzeni barw HSL i RGB
-    final Slider hueSlider = new Slider(0, 1, 0.5);
-    final Slider saturationSlider = new Slider(0, 1, 0.5);
-    final Slider lightnessSlider = new Slider(0, 1, 0.5);
-    final Slider redSlider = new Slider(0, 255, 127);
-    final Slider greenSlider = new Slider(0, 255, 127);
-    final Slider blueSlider = new Slider(0, 255, 127);
+    final Slider hueSlider = new Slider(-360, 360, 0);
+    final Slider saturationSlider = new Slider(-1, 1, 0);
+    final Slider lightnessSlider = new Slider(-1, 1, 0);
+    final Slider redSlider = new Slider(-255, 255, 0);
+    final Slider greenSlider = new Slider(-255, 255, 0);
+    final Slider blueSlider = new Slider(-255, 255, 0);
 
     //obrazek do obrobki - na razie statycznie
     Image image = new Image(getClass().getResourceAsStream("rainbow.jpg"));
@@ -62,13 +62,14 @@ public class Main extends Application {
 
     //efekt kolorystyczny - na razie gotowiec, do zastapienia wlasnym
     final static ColorAdjust colorEffect = new ColorAdjust();
-    final static JOCLImageEffects joclEffect = new JOCLImageEffects();
+    final static JOCLImageEffectsRGB joclEffectRGB = new JOCLImageEffectsRGB();
+    final static JOCLImageEffectsHSL joclEffectHSL = new JOCLImageEffectsHSL();
 
     @Override
     public void start(Stage stage) {
         //setup sceny, dodanie obrazkow itd
         Group root = new Group();
-        Scene scene = new Scene(root, 1230, 520);
+        Scene scene = new Scene(root, image.getWidth()*2 + 30, image.getHeight()+ 150);
         stage.setScene(scene);
         stage.setTitle("Systemy Rozproszone - program nr 2, Kamil Jankowski");
         scene.setFill(Color.RED);
@@ -155,7 +156,9 @@ public class Main extends Application {
         hueSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                colorEffect.setHue(new_val.doubleValue());
+                float deltaHue = new_val.floatValue() - old_val.floatValue();
+                image = joclEffectHSL.changeImageComponents(deltaHue, 0, 0, image);
+                imageview.setImage(image);
                 hueValue.setText(String.format("%.2f", new_val));
             }
         });
@@ -163,7 +166,9 @@ public class Main extends Application {
         saturationSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                colorEffect.setSaturation(new_val.doubleValue());
+                float deltaSaturation = new_val.floatValue() - old_val.floatValue();
+                image = joclEffectHSL.changeImageComponents(0, deltaSaturation, 0, image);
+                imageview.setImage(image);
                 saturationValue.setText(String.format("%.2f", new_val));
             }
         });
@@ -171,7 +176,9 @@ public class Main extends Application {
         lightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-                colorEffect.setBrightness(new_val.doubleValue());
+                float deltaLightness = new_val.floatValue() - old_val.floatValue();
+                image = joclEffectHSL.changeImageComponents(0, 0, deltaLightness, image);
+                imageview.setImage(image);
                 lightnessValue.setText(String.format("%.2f", new_val));
             }
         });
@@ -180,7 +187,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaRed = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(deltaRed, 0, 0, image);
+                image = joclEffectRGB.changeImageComponents(deltaRed, 0, 0, image);
                 imageview.setImage(image);
                 redValue.setText(String.format("%.2f", new_val));
             }
@@ -190,7 +197,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaGreen = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(0, deltaGreen, 0, image);
+                image = joclEffectRGB.changeImageComponents(0, deltaGreen, 0, image);
                 imageview.setImage(image);
                 greenValue.setText(String.format("%.2f", new_val));
             }
@@ -200,7 +207,7 @@ public class Main extends Application {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 float deltaBlue = new_val.intValue() - old_val.intValue();
-                image = joclEffect.changeImageBlueComponent(0, 0, deltaBlue, image);
+                image = joclEffectRGB.changeImageComponents(0, 0, deltaBlue, image);
                 imageview.setImage(image);
                 blueValue.setText(String.format("%.2f", new_val));
             }
