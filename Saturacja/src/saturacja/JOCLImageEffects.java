@@ -2,6 +2,8 @@ package saturacja;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import static org.jocl.CL.*;
 import org.jocl.*;
 import javafx.embed.swing.SwingFXUtils;
@@ -20,37 +22,10 @@ public class JOCLImageEffects {
     private int imageSizeX;
     private int imageSizeY;
 
-//kernel mockup
-    private static String programSource
-            = "" + "\n"
-            + "const sampler_t samplerIn = " + "\n"
-            + "    CLK_NORMALIZED_COORDS_FALSE | " + "\n"
-            + "    CLK_ADDRESS_CLAMP |" + "\n"
-            + "    CLK_FILTER_NEAREST;" + "\n"
-            + "" + "\n"
-            + "const sampler_t samplerOut = " + "\n"
-            + "    CLK_NORMALIZED_COORDS_FALSE |" + "\n"
-            + "    CLK_ADDRESS_CLAMP |" + "\n"
-            + "    CLK_FILTER_NEAREST;" + "\n"
-            + "" + "\n"
-            + "__kernel void changeImageSaturation(" + "\n"
-            + "    __read_only  image2d_t sourceImage, " + "\n"
-            + "    __write_only image2d_t targetImage, " + "\n"
-            + "    float angle)" + "\n"
-            + "{" + "\n"
-            + "    int gidX = get_global_id(0);" + "\n"
-            + "    int gidY = get_global_id(1);" + "\n"
-            + "    int w = get_image_width(sourceImage);" + "\n"
-            + "    int h = get_image_height(sourceImage);" + "\n"
-            + "    int2 posIn = {gidX, gidY};" + "\n"
-            + "    int2 posOut = {gidX, gidY};" + "\n"
-            + "    uint4 pixel = read_imageui(sourceImage, samplerIn, posIn);" + "\n"
-            + "    pixel.x = pixel.x + angle;" + "\n" //blue
-            + "    pixel.y = pixel.y;" + "\n" //green
-            + "    pixel.z = pixel.z;" + "\n" //red
-            + "    pixel.w = pixel.w;" + "\n" //alpha           
-            + "    write_imageui(targetImage, posOut, pixel);" + "\n"
-            + "}";
+//OpenCl kernel
+    private static supportOCL supportOCL = new supportOCL();
+    private static String kernelPath = ".\\src\\saturacja\\changeBlueChannel.cl";
+    private static String programSource = supportOCL.readOCLKernel(Paths.get(kernelPath));
 
     void initCL() {
         final int platformIndex = 0;
