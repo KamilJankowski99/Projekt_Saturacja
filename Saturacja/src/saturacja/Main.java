@@ -20,12 +20,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     //suwaczki dla przestrzeni barw HSL i RGB
-    final Slider hueSlider = new Slider(0, 360, 180);
-    final Slider saturationSlider = new Slider(0, 1, 0.5);
-    final Slider lightnessSlider = new Slider(0, 1, 0.5);
-    final Slider redSlider = new Slider(0, 255, 127);
-    final Slider greenSlider = new Slider(0, 255, 127);
-    final Slider blueSlider = new Slider(0, 255, 127);
+    final Slider hueSlider = new Slider(-360, 360, 0);
+    final Slider saturationSlider = new Slider(-1, 1, 0);
+    final Slider lightnessSlider = new Slider(-1, 1, 0);
+    final Slider redSlider = new Slider(-255, 255, 0);
+    final Slider greenSlider = new Slider(-255, 255, 0);
+    final Slider blueSlider = new Slider(-255, 255, 0);
 
     //obrazek do obrobki - na razie statycznie
     Image image = new Image(getClass().getResourceAsStream("rainbow.jpg"));
@@ -69,7 +69,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         //setup sceny, dodanie obrazkow itd
         Group root = new Group();
-        Scene scene = new Scene(root, 1230, 520);
+        Scene scene = new Scene(root, image.getWidth()*2 + 30, image.getHeight()+ 150);
         stage.setScene(scene);
         stage.setTitle("Systemy Rozproszone - program nr 2, Kamil Jankowski");
         scene.setFill(Color.RED);

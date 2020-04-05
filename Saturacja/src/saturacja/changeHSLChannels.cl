@@ -15,7 +15,6 @@ bool fequal(float x, float y)
     return (x+E > y && x-E < y);
 }
 
-
 __kernel void changeImageSaturation(
     __read_only  image2d_t sourceImage,
     __write_only image2d_t targetImage,
@@ -59,7 +58,7 @@ __kernel void changeImageSaturation(
     
     hue = 0.0f;
     if(fequal(rgb_max_component, red)) {
-        hue = fmod((green - blue)/chroma, 6.0f) + 0.0f;
+        hue = (green - blue)/chroma + 0.0f;
     }else if(fequal(rgb_max_component, green)){
         hue = fmod(((blue - red)/chroma), 6.0f) + 2.0f;
     }else if(fequal(rgb_max_component, blue)){
@@ -72,9 +71,9 @@ __kernel void changeImageSaturation(
     HSL_saturation = chroma/(1.0f - fabs(2.0f*lightness - 1.0f));
     }
     
-    hue = (float)round(hue);
-    HSL_saturation = HSL_saturation;
-    lightness = lightness;
+    hue = (int)hue + deltaHue;
+    HSL_saturation = HSL_saturation + deltaSaturation;
+    lightness = lightness + deltaLightness;
 
     chroma = (1.0f - fabs(2.0f * lightness - 1.0f)) * HSL_saturation;
     hue_prim = (hue / 60.0f);
