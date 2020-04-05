@@ -27,6 +27,8 @@ __kernel void changeImageSaturation(
     float HSL_saturation;
     float lightness;
     float m;
+    float X;
+    float hue_prim;
     int red;
     int green;
     int blue;
@@ -49,11 +51,11 @@ __kernel void changeImageSaturation(
 
     if(chroma == 0){
         hue = 0.0;
-    }else if(HSV_value == r) {
+    }else if(HSV_value == red) {
         hue = 60 * (0 + (green - blue)/chroma);
-    }else if(HSV_value == g){
+    }else if(HSV_value == green){
         hue = 60 * (2 + (blue - red)/chroma);
-    }else if(HSV_value == b){
+    }else if(HSV_value == blue){
         hue = 60 * (4 + (red - green)/chroma);
     }
 
@@ -76,9 +78,9 @@ __kernel void changeImageSaturation(
     HSL_saturation = HSL_saturation + deltaSaturation;
     lightness = lightness +deltaLightness;
 
-    chroma = (1 - abs(2 * lightness) -1) * HSL_saturation;
+    chroma = (1 - fabs(2 * lightness) -1) * HSL_saturation;
     hue_prim = hue / 60;
-    X = chroma * (1 - abs(hue_prim%2 - 1));
+    X = chroma * (1 - fabs(fmod(hue_prim, 2) - 1));
 
     if (hue_prim == 1){
         red_prim = chroma;

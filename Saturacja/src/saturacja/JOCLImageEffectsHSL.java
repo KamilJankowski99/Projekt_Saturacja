@@ -118,7 +118,7 @@ public class JOCLImageEffectsHSL {
                 0, null, null);
     }
 
-    Image changeImageBlueComponent(float deltaRed, float deltaGreen, float deltaBlue, Image inputJXFImage) {
+    Image changeImageComponents(float deltaRed, float deltaGreen, float deltaBlue, Image inputJXFImage) {
         initCL();
         inputImage = SwingFXUtils.fromFXImage(inputJXFImage, null);
 
