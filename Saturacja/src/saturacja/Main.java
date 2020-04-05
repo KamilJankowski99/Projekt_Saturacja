@@ -179,7 +179,9 @@ public class Main extends Application {
         redSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-//TO DO: dodac obsluge efektu
+                float deltaRed = new_val.intValue() - old_val.intValue();
+                image = joclEffect.changeImageBlueComponent(deltaRed, 0, 0, image);
+                imageview.setImage(image);
                 redValue.setText(String.format("%.2f", new_val));
             }
         });
@@ -187,7 +189,9 @@ public class Main extends Application {
         greenSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-//TO DO: dodac obsluge efektu
+                float deltaGreen = new_val.intValue() - old_val.intValue();
+                image = joclEffect.changeImageBlueComponent(0, deltaGreen, 0, image);
+                imageview.setImage(image);
                 greenValue.setText(String.format("%.2f", new_val));
             }
         });
@@ -195,8 +199,6 @@ public class Main extends Application {
         blueSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
-//TO DO: dodac obsluge efektu
-
                 float deltaBlue = new_val.intValue() - old_val.intValue();
                 image = joclEffect.changeImageBlueComponent(0, 0, deltaBlue, image);
                 imageview.setImage(image);
