@@ -27,7 +27,7 @@ public class JOCLImageEffectsHSL {
     private static String kernelPath = ".\\src\\saturacja\\changeHSLChannels.cl";
     private static String programSource = supportOCL.readOCLKernel(Paths.get(kernelPath));
 
-    void initCL() {
+    JOCLImageEffectsHSL() {
         final int platformIndex = 0;
         final long deviceType = CL_DEVICE_TYPE_ALL;
         final int deviceIndex = 0;
@@ -119,7 +119,7 @@ public class JOCLImageEffectsHSL {
     }
 
     Image changeImageComponents(float deltaHue, float deltaSaturation, float deltaVolume, Image inputJXFImage) {
-        initCL();
+
         inputImage = SwingFXUtils.fromFXImage(inputJXFImage, null);
 
         imageSizeX = inputImage.getWidth();
@@ -153,7 +153,8 @@ public class JOCLImageEffectsHSL {
                 new long[]{imageSizeX, imageSizeY, 1},
                 imageSizeX * Sizeof.cl_uint, 0,
                 Pointer.to(dataDst), 0, null, null);
-
+        clReleaseMemObject(inputImageMem);
+        clReleaseMemObject(outputImageMem);
         clFlush(commandQueue);
         clFinish(commandQueue);
         return SwingFXUtils.toFXImage(outputImage, null);

@@ -69,7 +69,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         //setup sceny, dodanie obrazkow itd
         Group root = new Group();
-        Scene scene = new Scene(root, image.getWidth()*2 + 30, image.getHeight()+ 150);
+        Scene scene = new Scene(root, image.getWidth() * 2 + 30, image.getHeight() + 150);
         stage.setScene(scene);
         stage.setTitle("Systemy Rozproszone - program nr 2, Kamil Jankowski");
         scene.setFill(Color.RED);

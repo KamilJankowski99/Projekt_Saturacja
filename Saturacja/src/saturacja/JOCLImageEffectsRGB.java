@@ -27,7 +27,7 @@ public class JOCLImageEffectsRGB {
     private static String kernelPath = ".\\src\\saturacja\\changeRGBChannels.cl";
     private static String programSource = supportOCL.readOCLKernel(Paths.get(kernelPath));
 
-    void initCL() {
+    JOCLImageEffectsRGB() {
         final int platformIndex = 0;
         final long deviceType = CL_DEVICE_TYPE_ALL;
         final int deviceIndex = 0;
@@ -119,7 +119,6 @@ public class JOCLImageEffectsRGB {
     }
 
     Image changeImageComponents(float deltaRed, float deltaGreen, float deltaBlue, Image inputJXFImage) {
-        initCL();
         inputImage = SwingFXUtils.fromFXImage(inputJXFImage, null);
 
         imageSizeX = inputImage.getWidth();
@@ -153,7 +152,8 @@ public class JOCLImageEffectsRGB {
                 new long[]{imageSizeX, imageSizeY, 1},
                 imageSizeX * Sizeof.cl_uint, 0,
                 Pointer.to(dataDst), 0, null, null);
-
+        clReleaseMemObject(inputImageMem);
+        clReleaseMemObject(outputImageMem);
         clFlush(commandQueue);
         clFinish(commandQueue);
         return SwingFXUtils.toFXImage(outputImage, null);
