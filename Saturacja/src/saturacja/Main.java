@@ -1,12 +1,20 @@
 package saturacja;
 
+import java.awt.Desktop;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.ColorAdjust;
@@ -14,7 +22,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 
 //javafx wymaga klasy rozszerzajacej klase Application 
 public class Main extends Application {
@@ -30,6 +40,11 @@ public class Main extends Application {
     //obrazek do obrobki - na razie statycznie
     Image image = new Image(getClass().getResourceAsStream("rainbow.jpg"));
     Image imageOriginal = new Image(getClass().getResourceAsStream("rainbow.jpg"));
+
+    final FileChooser fileChooser = new FileChooser();
+    final Button openButton = new Button("Otwarcie obrazka");
+    final Button saveButton = new Button("Zapisanie obrazka");
+    private Desktop desktop = Desktop.getDesktop();
 
     //labelki identyfikujace obrazki
     final Label flagOriginal = new Label("Oryginalny obrazek:");
@@ -66,6 +81,7 @@ public class Main extends Application {
     final static JOCLImageEffectsHSL joclEffectHSL = new JOCLImageEffectsHSL();
 
     @Override
+
     public void start(Stage stage) {
         //setup sceny, dodanie obrazkow itd
         Group root = new Group();
@@ -117,6 +133,8 @@ public class Main extends Application {
         GridPane.setConstraints(blueCaption, 3, 4);
         GridPane.setConstraints(blueSlider, 4, 4);
         GridPane.setConstraints(blueValue, 5, 4);
+        GridPane.setConstraints(openButton, 5, 0);
+        GridPane.setConstraints(saveButton, 2, 0);
 
         //dodanie elementow GUI do siatki
         grid.getChildren().add(hueCaption);
@@ -137,6 +155,8 @@ public class Main extends Application {
         grid.getChildren().add(blueCaption);
         grid.getChildren().add(blueSlider);
         grid.getChildren().add(blueValue);
+        grid.getChildren().add(openButton);
+        grid.getChildren().add(saveButton);
 
         //kolorki tekstu na wczesniej ustawiony default
         hueCaption.setTextFill(textColor);
@@ -151,6 +171,41 @@ public class Main extends Application {
         greenValue.setTextFill(textColor);
         blueCaption.setTextFill(textColor);
         blueValue.setTextFill(textColor);
+
+        openButton.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent e) {
+                File file = fileChooser.showOpenDialog(stage);
+                if (file != null) {
+
+                    imageview.setImage(new Image("file:" + file.getAbsolutePath()));
+                    imageviewOriginal.setImage(new Image("file:" + file.getAbsolutePath()));
+                }
+            }
+        });
+        saveButton.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent e) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save Image");
+                File file = fileChooser.showSaveDialog(stage);
+                if (file != null) {
+                    try {
+                        BufferedImage outputImage = SwingFXUtils.fromFXImage(image, null);
+                        int imageSizeX = outputImage.getWidth();
+                        int imageSizeY = outputImage.getHeight();
+                        int[] pixels = outputImage.getRGB(0, 0, imageSizeX, imageSizeY, null, 0, imageSizeX);
+                        BufferedImage bufferedImageNoAlphaChannel = new BufferedImage(imageSizeX, imageSizeY, BufferedImage.OPAQUE);
+                        bufferedImageNoAlphaChannel.setRGB(0, 0, imageSizeX, imageSizeY, pixels, 0, imageSizeX);
+                        ImageIO.write(bufferedImageNoAlphaChannel, "jpg", file);
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        });
 
         //sledzenie zmian suwaczkow, aktualizacja wyswietlanej wartosci i aplikowanie efektu
         hueSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -221,5 +276,4 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

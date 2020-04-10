@@ -2,12 +2,11 @@ package saturacja;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import static org.jocl.CL.*;
-import org.jocl.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import org.jocl.*;
+import static org.jocl.CL.*;
 
 public class JOCLImageEffectsHSL {
 
@@ -129,7 +128,7 @@ public class JOCLImageEffectsHSL {
         outputImage = new BufferedImage(
                 imageSizeX, imageSizeY, BufferedImage.TYPE_INT_RGB);
 
-        // Set up the work size and arguments, and execute the kernel
+        // uruchomienie kernela OpenCL
         long globalWorkSize[] = new long[2];
         globalWorkSize[0] = imageSizeX;
         globalWorkSize[1] = imageSizeY;
@@ -144,7 +143,7 @@ public class JOCLImageEffectsHSL {
         clEnqueueNDRangeKernel(commandQueue, kernel, 2, null,
                 globalWorkSize, null, 0, null, null);
 
-        // Read the pixel data into the output image
+        // Odczytanie pikseli obrazka i zapis
         DataBufferInt dataBufferDst
                 = (DataBufferInt) outputImage.getRaster().getDataBuffer();
         int dataDst[] = dataBufferDst.getData();
@@ -153,10 +152,12 @@ public class JOCLImageEffectsHSL {
                 new long[]{imageSizeX, imageSizeY, 1},
                 imageSizeX * Sizeof.cl_uint, 0,
                 Pointer.to(dataDst), 0, null, null);
+
         clReleaseMemObject(inputImageMem);
         clReleaseMemObject(outputImageMem);
         clFlush(commandQueue);
         clFinish(commandQueue);
+
         return SwingFXUtils.toFXImage(outputImage, null);
     }
 }
