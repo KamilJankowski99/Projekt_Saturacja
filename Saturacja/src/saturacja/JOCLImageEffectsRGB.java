@@ -2,12 +2,11 @@ package saturacja;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import static org.jocl.CL.*;
-import org.jocl.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import org.jocl.*;
+import static org.jocl.CL.*;
 
 public class JOCLImageEffectsRGB {
 
@@ -22,7 +21,7 @@ public class JOCLImageEffectsRGB {
     private int imageSizeX;
     private int imageSizeY;
 
-//OpenCl kernel
+    //OpenCl kernel
     private static supportOCL supportOCL = new supportOCL();
     private static String kernelPath = ".\\src\\saturacja\\changeRGBChannels.cl";
     private static String programSource = supportOCL.readOCLKernel(Paths.get(kernelPath));
